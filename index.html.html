@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Automated FIR Drafting – Thefts, Robbery & Burglary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-card: #0f172a;
+      --bg-card-soft: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --accent-strong: #0ea5e9;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --border: #1f2933;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-lg: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.7);
+      --transition-fast: 0.2s ease;
+      --transition-med: 0.35s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      backdrop-filter: blur(16px);
+      background: linear-gradient(
+        90deg,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.85),
+        rgba(15, 23, 42, 0.96)
+      );
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: radial-gradient(circle at 30% 0%, #38bdf8 0, #0f172a 40%, #020617 75%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.55);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #e5f6ff;
+    }
+
+    .brand-text-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-text-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      color: #bbf7d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 1.7rem auto 2.5rem;
+      padding: 0 1.25rem 2.5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 1.75rem;
+      margin-bottom: 1.75rem;
+      align-items: center;
+    }
+
+    .hero-left h1 {
+      font-size: clamp(1.9rem, 3vw, 2.4rem);
+      margin: 0 0 0.5rem;
+      line-height: 1.25;
+    }
+
+    .hero-gradient {
+      background: radial-gradient(circle at top left, #38bdf8, transparent 55%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 36rem;
+      line-height: 1.6;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.7rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      padding: 0.23rem 0.6rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      color: #cbd5f5;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-card {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 60%),
+        linear-gradient(145deg, #020617, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      padding: 1.15rem 1.2rem 1.25rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% 10%, rgba(248, 250, 252, 0.12), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .hero-card-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-card-heading {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e5f6ff;
+      opacity: 0.85;
+    }
+
+    .hero-card-caption {
+      font-size: 0.8rem;
+      color: rgba(226, 232, 240, 0.88);
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-card-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6rem;
+      font-size: 0.77rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .mini-stat {
+      padding: 0.55rem 0.6rem;
+      border-radius: 0.9rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 0.05rem;
+    }
+
+    .mini-stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .mini-stat-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .hero-card-note {
+      font-size: 0.68rem;
+      color: rgba(209, 213, 219, 0.85);
+      margin-top: 0.4rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1.55fr);
+      gap: 1.6rem;
+      align-items: flex-start;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 55%),
+        var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem 1.25rem 1.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 110% 0%, rgba(56, 189, 248, 0.15), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .pill {
+      font-size: 0.68rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #cbd5f5;
+    }
+
+    .card-subtitle {
+      font-size: 0.82rem;
+      color: var(--muted);
+      max-width: 20rem;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-row-full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      margin-bottom: 0.28rem;
+      color: #e5e7eb;
+    }
+
+    .label-small {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.18rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 0.8rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.55rem 0.75rem;
+      font: inherit;
+      font-size: 0.85rem;
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text);
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent-strong);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      background: #020617;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 72px;
+      max-height: 160px;
+    }
+
+    .input-row-inline {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .input-row-inline > div {
+      flex: 1;
+    }
+
+    .button-row {
+      margin-top: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      font: inherit;
+      padding: 0.52rem 0.9rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-strong), #22c55e);
+      color: #0b1120;
+      font-weight: 600;
+      box-shadow: 0 14px 30px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 36px rgba(56, 189, 248, 0.55);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.65);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: var(--accent);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+    }
+
+    .btn-outline:hover {
+      border-style: solid;
+      border-color: var(--accent-strong);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-left: 0.1rem;
+    }
+
+    .preview-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .preview-box {
+      border-radius: 1rem;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.1), transparent 55%),
+        var(--bg-card-soft);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 0.9rem 0.9rem;
+      height: 360px;
+      overflow: auto;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.7) transparent;
+    }
+
+    .preview-box::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .preview-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .preview-box::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.7);
+      border-radius: 999px;
+    }
+
+    .preview-placeholder {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .preview-metadata {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.73rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .chip {
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+    }
+
+    .status-dot-idle {
+      background: #facc15;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+    }
+
+    .text-danger {
+      color: var(--danger);
+    }
+
+    footer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0.4rem 1.25rem 1.5rem;
+      font-size: 0.76rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-card {
+        order: -1;
+      }
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .preview-box {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner {
+        padding-inline: 1rem;
+      }
+      .hero {
+        margin-bottom: 1.2rem;
+      }
+      .card {
+        padding-inline: 1rem;
+      }
+      .form-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .button-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .button-row button {
+        justify-content: center;
+        width: 100%;
+      }
+      footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-logo">FIR</div>
+        <div>
+          <div class="brand-text-title">Automated FIR Drafting</div>
+          <div class="brand-text-sub">Thefts · Robbery · Burglary</div>
+        </div>
+      </div>
+      <span class="badge">
+        ●
+        <span>Draft Generator</span>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-left">
+        <h1>
+          Speed up <span class="hero-gradient">FIR drafting</span>
+          for property offences.
+        </h1>
+        <p class="hero-sub">
+          This tool helps you auto-draft a structured FIR for thefts, robbery and burglary cases.
+          Fill the key details and get a formatted FIR draft you can review, refine and submit at the
+          concerned police station.
+        </p>
+        <div class="hero-tags">
+          <span class="tag">Standardised FIR format</span>
+          <span class="tag">Indian policing context</span>
+          <span class="tag">For academic / project use</span>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="Quick facts">
+        <div class="hero-card-badge-row">
+          <div class="hero-card-heading">Case Intake Snapshot</div>
+          <span class="chip">
+            <span class="status-dot"></span>
+            Live draft mode
+          </span>
+        </div>
+        <div class="hero-card-caption">
+          Capture complainant details, incident facts, stolen property and witnesses in one guided flow.
+        </div>
+        <div class="hero-card-stats">
+          <div class="mini-stat">
+            <span class="mini-stat-label">Supported Offences</span>
+            <span class="mini-stat-value">Theft · Robbery · Burglary</span>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Draft Output</span>
+            <span class="mini-stat-value">Plain-text FIR</span>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Actions</span>
+            <span class="mini-stat-value">Copy · Download</span>
+          </div>
+        </div>
+        <p class="hero-card-note">
+          <strong>Note:</strong> This is a <em>drafting aid</em> only. Final FIR content must be verified and
+          approved by the authorised police officer.
+        </p>
+      </aside>
+    </section>
+
+    <section class="layout" aria-label="Drafting workspace">
+      <!-- LEFT: FORM -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              FIR Input Form
+            </h2>
+            <p class="card-subtitle">
+              Enter factual information as narrated by the complainant. The system will arrange it into a formal FIR draft.
+            </p>
+          </div>
+          <span class="pill">Step 1 · Capture Facts</span>
+        </div>
+
+        <form id="fir-form" autocomplete="off">
+          <div class="form-grid">
+            <div class="form-row-full">
+              <label for="stationName">Police Station & District</label>
+              <input id="stationName" name="stationName" placeholder="e.g. XYZ Police Station, ABC City" />
+            </div>
+
+            <div>
+              <label for="complainantName">Complainant Name</label>
+              <input id="complainantName" name="complainantName" placeholder="Full name" />
+            </div>
+
+            <div>
+              <label for="complainantAge">Age</label>
+              <input id="complainantAge" name="complainantAge" type="number" min="0" placeholder="e.g. 32" />
+            </div>
+
+            <div class="form-row-full">
+              <label for="complainantAddress">Complainant Address</label>
+              <textarea id="complainantAddress" name="complainantAddress" placeholder="House no, street, locality, city, pin code"></textarea>
+            </div>
+
+            <div>
+              <label for="contactNumber">Contact Number</label>
+              <input id="contactNumber" name="contactNumber" type="tel" placeholder="e.g. 9XXXXXXXXX" />
+            </div>
+
+            <div>
+              <label for="idDetails">ID Proof (if any)</label>
+              <input id="idDetails" name="idDetails" placeholder="e.g. Aadhaar, PAN, etc." />
+            </div>
+
+            <div>
+              <label for="incidentType">Type of Offence</label>
+              <select id="incidentType" name="incidentType">
+                <option value="theft" selected>Theft</option>
+                <option value="robbery">Robbery</option>
+                <option value="burglary">Burglary</option>
+              </select>
+              <div class="label-small">
+                Select the most appropriate category as per IPC.
+              </div>
+            </div>
+
+            <div>
+              <label for="incidentDate">Date of Incident</label>
+              <input id="incidentDate" name="incidentDate" type="date" />
+            </div>
+
+            <div>
+              <label for="incidentTime">Approximate Time</label>
+              <input id="incidentTime" name="incidentTime" type="time" />
+            </div>
+
+            <div>
+              <label for="reportDate">Date of Reporting</label>
+              <input id="reportDate" name="reportDate" type="date" />
+            </div>
+
+            <div class="form-row-full">
+              <label for="incidentLocation">Place of Occurrence</label>
+              <textarea id="incidentLocation" name="incidentLocation" placeholder="Exact location with landmark, city, state"></textarea>
+            </div>
+
+            <div class="form-row-full">
+              <label for="incidentDescription">Brief Facts of the Case</label>
+              <textarea id="incidentDescription" name="incidentDescription" placeholder="Narrate what happened in simple language, in sequence."></textarea>
+            </div>
+
+            <div class="form-row-full">
+              <label for="stolenProperty">Stolen / Robbed Property</label>
+              <textarea id="stolenProperty" name="stolenProperty" placeholder="List items, description (brand, colour, IMEI/serial numbers), quantity, etc."></textarea>
+            </div>
+
+            <div class="form-row-full">
+              <label for="estimatedValue">Approximate Total Value (₹)</label>
+              <input id="estimatedValue" name="estimatedValue" type="number" min="0" step="0.01" placeholder="e.g. 150000" />
+            </div>
+
+            <div class="form-row-full">
+              <label for="suspectDetails">Suspect Details (if any)</label>
+              <textarea id="suspectDetails" name="suspectDetails" placeholder="Name, description, relation with complainant, last seen, etc. Leave blank if unknown."></textarea>
+            </div>
+
+            <div class="form-row-full">
+              <label for="witnessDetails">Witness Details (if any)</label>
+              <textarea id="witnessDetails" name="witnessDetails" placeholder="Names, addresses, contact numbers and what they witnessed."></textarea>
+            </div>
+
+            <div class="form-row-full">
+              <label for="additionalInfo">Additional Information</label>
+              <textarea id="additionalInfo" name="additionalInfo" placeholder="Any CCTV footage, previous threats, prior complaints, etc."></textarea>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button type="submit" class="btn-primary">
+              ✨ Generate FIR Draft
+            </button>
+            <button type="button" id="btn-clear" class="btn-outline">
+              🧹 Clear Form
+            </button>
+            <span class="hint">
+              Output appears on the right panel.
+            </span>
+          </div>
+        </form>
+      </article>
+
+      <!-- RIGHT: PREVIEW -->
+      <article class="card preview-container">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              FIR Draft Preview
+            </h2>
+            <p class="card-subtitle">
+              Review the auto-generated FIR draft. You can copy or download it and then modify wording as per legal requirements.
+            </p>
+          </div>
+          <span class="pill">Step 2 · Review & Refine</span>
+        </div>
+
+        <div class="preview-box" id="preview-box" aria-label="FIR Draft Preview">
+          <div class="preview-placeholder">
+            Your FIR draft will appear here after you fill the form and click
+            “Generate FIR Draft”.
+          </div>
+        </div>
+
+        <div class="button-row" style="margin-top: 0.8rem;">
+          <button type="button" id="btn-copy" class="btn-ghost">
+            📋 Copy to Clipboard
+          </button>
+          <button type="button" id="btn-download" class="btn-ghost">
+            💾 Download as .txt
+          </button>
+          <span class="hint" id="action-status">No draft generated yet.</span>
+        </div>
+
+        <div class="preview-metadata">
+          <div class="chip">
+            <span class="status-dot status-dot-idle"></span>
+            Draft status: <span id="draft-status">Idle</span>
+          </div>
+          <div>
+            <span class="text-danger">*</span>
+            <span>Draft must be checked and vetted by the duty officer.</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <span>
+      📌 <strong>Disclaimer:</strong> This is an academic / prototype tool for automating FIR drafting.
+      It does not constitute legal advice and does not replace official FIR registration procedure.
+    </span>
+    <span>
+      🔒 No data is stored on a server – everything runs locally in your browser.
+    </span>
+  </footer>
+
+  <script>
+    (function () {
+      const form = document.getElementById("fir-form");
+      const previewBox = document.getElementById("preview-box");
+      const btnCopy = document.getElementById("btn-copy");
+      const btnDownload = document.getElementById("btn-download");
+      const btnClear = document.getElementById("btn-clear");
+      const actionStatus = document.getElementById("action-status");
+      const draftStatus = document.getElementById("draft-status");
+
+      function normaliseText(value) {
+        return (value || "").toString().trim();
+      }
+
+      function mapIncidentType(value) {
+        switch (value) {
+          case "robbery":
+            return "robbery";
+          case "burglary":
+            return "burglary";
+          default:
+            return "theft";
+        }
+      }
+
+      function getTodayFormatted() {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, "0");
+        const dd = String(now.getDate()).padStart(2, "0");
+        return dd + "-" + mm + "-" + yyyy;
+      }
+
+      function generateFirDraft(data) {
+        const incidentTypeWord = mapIncidentType(data.incidentType);
+        const subjectIncident =
+          incidentTypeWord.charAt(0).toUpperCase() + incidentTypeWord.slice(1);
+
+        const incidentDatePart = data.incidentDate
+          ? "on " + data.incidentDateFormatted
+          : "";
+        const incidentTimePart = data.incidentTime
+          ? " at about " + data.incidentTimeFormatted + " hrs"
+          : "";
+        const incidentPlacePart = data.incidentLocation
+          ? " at " + data.incidentLocation
+          : "";
+
+        const reportingDatePart = data.reportDate
+          ? data.reportDateFormatted
+          : getTodayFormatted();
+
+        const propertyPart = data.stolenProperty
+          ? data.stolenProperty
+          : "details of stolen property to be ascertained.";
+
+        const valuePart = data.estimatedValue
+          ? "The approximate total value of the stolen/robbed property is around ₹" +
+            data.estimatedValue +
+            " (Rupees " +
+            data.estimatedValue +
+            " only)."
+          : "";
+
+        const suspectsPart = data.suspectDetails
+          ? "That I have the following information regarding the accused/suspect:\n" +
+            data.suspectDetails +
+            "\n\n"
+          : "";
+
+        const witnessesPart = data.witnessDetails
+          ? "There are following witnesses to the incident:\n" +
+            data.witnessDetails +
+            "\n\n"
+          : "";
+
+        const additionalPart = data.additionalInfo
+          ? "Additional information:\n" + data.additionalInfo + "\n\n"
+          : "";
+
+        const complainantLine = data.complainantAge
+          ? data.complainantName +
+            ", aged about " +
+            data.complainantAge +
+            " years, resident of " +
+            (data.complainantAddress || "_________________") +
+            "."
+          : data.complainantName +
+            ", resident of " +
+            (data.complainantAddress || "_________________") +
+            ".";
+
+        const contactLine = data.contactNumber
+          ? "My contact/mobile number is " + data.contactNumber + "."
+          : "";
+
+        const idLine = data.idDetails
+          ? "I am enclosing a copy of my ID proof (" + data.idDetails + ") for your record."
+          : "";
+
+        const firText = `
+To,
+The Station House Officer
+${data.stationName || "_____________________"}
+_____________________
+
+Subject: Complaint regarding ${subjectIncident.toLowerCase()} of property${incidentDatePart ? " " + incidentDatePart : ""} ${incidentPlacePart ? "at " + data.incidentLocation : ""}
+
+Sir/Madam,
+
+1. I, ${complainantLine}
+${contactLine}
+${idLine ? idLine + "\n" : ""}
+2. I respectfully submit that on ${incidentDatePart || "__________"}${incidentTimePart}${incidentPlacePart ? incidentPlacePart : ""}, a case of ${incidentTypeWord} has occurred, as per the following brief facts:
+
+${data.incidentDescription || "Brief facts of the incident to be narrated here in sequence."}
+
+3. The details of the stolen/robbed property are as under:
+${propertyPart}
+
+${valuePart}
+
+${suspectsPart}${witnessesPart}${additionalPart}4. I request you to kindly register a First Information Report (FIR) under the appropriate sections of law for the offence of ${incidentTypeWord} and take necessary legal action against the person(s) responsible. I am ready to cooperate with the investigation in every possible manner.
+
+5. I state that the above facts are true and correct to the best of my knowledge and belief.
+
+Date of reporting: ${reportingDatePart}
+Place: ${data.stationName || "__________"}
+
+Yours faithfully,
+
+Signature: ______________________
+Name   : ${data.complainantName || "______________________"}
+Address: ${data.complainantAddress || "______________________"}
+Contact: ${data.contactNumber || "______________________"}
+
+(Computer-generated FIR draft – to be checked and approved by the duty officer before registration.)
+        `.trim();
+
+        return firText;
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+
+        const data = {
+          stationName: normaliseText(formData.get("stationName")),
+          complainantName: normaliseText(formData.get("complainantName")),
+          complainantAge: normaliseText(formData.get("complainantAge")),
+          complainantAddress: normaliseText(formData.get("complainantAddress")),
+          contactNumber: normaliseText(formData.get("contactNumber")),
+          idDetails: normaliseText(formData.get("idDetails")),
+          incidentType: formData.get("incidentType") || "theft",
+          incidentDate: normaliseText(formData.get("incidentDate")),
+          incidentTime: normaliseText(formData.get("incidentTime")),
+          reportDate: normaliseText(formData.get("reportDate")),
+          incidentLocation: normaliseText(formData.get("incidentLocation")),
+          incidentDescription: normaliseText(formData.get("incidentDescription")),
+          stolenProperty: normaliseText(formData.get("stolenProperty")),
+          estimatedValue: normaliseText(formData.get("estimatedValue")),
+          suspectDetails: normaliseText(formData.get("suspectDetails")),
+          witnessDetails: normaliseText(formData.get("witnessDetails")),
+          additionalInfo: normaliseText(formData.get("additionalInfo")),
+        };
+
+        if (data.incidentDate) {
+          const d = new Date(data.incidentDate);
+          if (!isNaN(d.getTime())) {
+            const dd = String(d.getDate()).padStart(2, "0");
+            const mm = String(d.getMonth() + 1).padStart(2, "0");
+            const yyyy = d.getFullYear();
+            data.incidentDateFormatted = dd + "-" + mm + "-" + yyyy;
+          } else {
+            data.incidentDateFormatted = data.incidentDate;
+          }
+        } else {
+          data.incidentDateFormatted = "";
+        }
+
+        if (data.reportDate) {
+          const d2 = new Date(data.reportDate);
+          if (!isNaN(d2.getTime())) {
+            const dd2 = String(d2.getDate()).padStart(2, "0");
+            const mm2 = String(d2.getMonth() + 1).padStart(2, "0");
+            const yyyy2 = d2.getFullYear();
+            data.reportDateFormatted = dd2 + "-" + mm2 + "-" + yyyy2;
+          } else {
+            data.reportDateFormatted = data.reportDate;
+          }
+        } else {
+          data.reportDateFormatted = "";
+        }
+
+        data.incidentTimeFormatted = data.incidentTime || "";
+
+        const firDraft = generateFirDraft(data);
+
+        previewBox.textContent = firDraft;
+        draftStatus.textContent = "Draft generated";
+        actionStatus.textContent = "Draft updated. You can now copy or download it.";
+      });
+
+      btnCopy.addEventListener("click", async function () {
+        const text = previewBox.textContent.trim();
+        if (!text) {
+          actionStatus.textContent = "Generate a draft before copying.";
+          return;
+        }
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const tempTextarea = document.createElement("textarea");
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextarea);
+          }
+          actionStatus.textContent = "Draft copied to clipboard.";
+        } catch (err) {
+          console.error(err);
+          actionStatus.textContent = "Unable to copy. Please select and copy manually.";
+        }
+      });
+
+      btnDownload.addEventListener("click", function () {
+        const text = previewBox.textContent.trim();
+        if (!text) {
+          actionStatus.textContent = "Generate a draft before downloading.";
+          return;
+        }
+        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const today = getTodayFormatted().replace(/-/g, "");
+        a.href = url;
+        a.download = "FIR_Draft_" + today + ".txt";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        actionStatus.textContent = "Draft downloaded as text file.";
+      });
+
+      btnClear.addEventListener("click", function () {
+        form.reset();
+        previewBox.innerHTML =
+          '<div class="preview-placeholder">Your FIR draft will appear here after you fill the form and click “Generate FIR Draft”.</div>';
+        draftStatus.textContent = "Idle";
+        actionStatus.textContent = "Form cleared. No draft generated.";
+      });
+    })();
+  </script>
+</body>
+</html>
